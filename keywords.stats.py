@@ -3,7 +3,11 @@ from login import p, ses
 from datetime import datetime
 
 
-USER = 235632
+USER = 313744
+CAMPAIGN = 848016
+
+DATE_FROM = datetime.strptime("16.03.2016", "%d.%m.%Y")
+DATE_TO = datetime.strptime("22.03.2016", "%d.%m.%Y")
 
 res = p.campaigns.list({
 	'session' : ses,
@@ -15,6 +19,9 @@ cIds = list()
 for c in res["campaigns"]:
 	cIds.append(c["id"])
 
+if CAMPAIGN:
+	cIds = list()
+	cIds.append(CAMPAIGN)
 
 res = p.groups.list({
 	"session" : ses,
@@ -37,18 +44,20 @@ res = p.keywords.list({
 for k in res["keywords"]:
 	keywordIds.append(k["id"])
 
-
-
-
-
 res = p.keywords.stats({
 	"session" : ses,
 	"userId"  : USER},
-	keywordIds[:100], {
-	"dateFrom" : datetime.strptime("20.03.2016", "%d.%m.%Y"),
-	"dateTo" : datetime.strptime("27.03.2016", "%d.%m.%Y"),
+	keywordIds, {
+	"dateFrom" : DATE_FROM,
+	"dateTo" : DATE_TO,
 	"granularity" : "daily"}
 )
-print res
+
 for r in  res["report"]:
-	print r 
+	print "KW:", r["keywordId"] 
+	for k in r["stats"]:
+		print "\t", k["date"], k["impressions"], k["clicks"]
+
+print "Kampane", cIds
+print "Sestavy", gIds
+
