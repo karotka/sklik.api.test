@@ -2,15 +2,22 @@
 from login import p, ses
 from datetime import datetime
 
-
+USERID = 284532
+DATE_FROM = datetime.strptime("11.1.2015", "%d.%m.%Y")
+DATE_TO = datetime.strptime("11.1.2015", "%d.%m.%Y")
 
 res = p.client.stats(
 	{
-		"session" : ses},
+		"session" : ses, 
+                "userId" : USERID
+	},
 	{
-		"dateFrom" : datetime.strptime("13.3.2015", "%d.%m.%Y"),
-		"dateTo"   : datetime.strptime("13.3.2015", "%d.%m.%Y"),
-                "granularity" : "daily" }
+		"dateFrom" : DATE_FROM,
+		"dateTo"   : DATE_TO,
+                "granularity" : "daily", 
+		"includeFulltext" : True,
+		"includeContext" : True
+	}
 )
 if res["status"] == 200:
     ses = res["session"]
