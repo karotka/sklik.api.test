@@ -4,7 +4,8 @@
 from login import p, ses
 
 res = p.keywords.suggest.stats({'session' : ses}, [
-'pneumatiky'
+
+"pneumatiky", "pneumatiky praha", "školní batohy", "detske batohy", "ubytování liberec"
 
 ], {"granularity" : "monthly"})
 ses = res["session"]
