@@ -2,28 +2,54 @@
 from login import p, ses
 from datetime import datetime
 
+USER = 313744
+CAMPAIGN = 0 
 
+DATE_FROM = datetime.strptime("16.03.2016", "%d.%m.%Y")
+DATE_TO = datetime.strptime("22.03.2016", "%d.%m.%Y")
+
+res = p.campaigns.list({
+        'session' : ses,
+        'userId' : USER},
+      )
+
+cIds = list()
+for c in res["campaigns"]:
+        cIds.append(c["id"])
+res = p.groups.list({
+        "session" : ses,
+        "userId"  : USER},
+        {"campaignIds" : cIds}
+
+)
+
+gIds = list()
+for g in res["groups"]:
+        gIds.append(g["id"])
+
+if CAMPAIGN:
+        cIds = list()
+        cIds.append(CAMPAIGN)
 
 res = p.groups.stats(
 	{
 		"session" : ses,
-		"userId"  : 68429,
-	},
-	[10437248,10437249,10437250,10437251,10437252,10437253,10437254,10437255,10437256,10437257,10437258,10437259,10437260,10437261,10437262,10437263,10437264,10437265,10437266,10437267,10437268,10437269,10437270,10437271,10437272,10437273,10437274,10437275,10437276,10437277,10437278,10437279,10437280,10437281,10437282,10437283,10437284,10437285,10437286,10437287,10437288,10437289,10437290,10437291,10437292,10437293,10437294,10437295,10437296,10437297,10437298,10437299,10437300,10437301,10437302,10437303,10437304,10437305,10437306,10437307,10437308,10437309,10437310,10437311,10437312,10437313,10437314,10437315,10437316,10437317,10437318,10437319,10437320,10437321,10437322,10437323,10437324,10437325,10437326,10437327,10437328,10437329,10437330,10437331,10437332,10437333,10437334,10437335,10437336,10437337,10437338,10437339,10437340,10437341,10437342,10437343,10437344,10437345,10437346,10437347],
-
+		"userId"  : USER,
+	}, gIds,
 	{
-		"dateFrom": datetime.strptime("01.01.2015", "%d.%m.%Y"),
-		"dateTo":   datetime.strptime("31.12.2015", "%d.%m.%Y"),
+		"dateFrom": DATE_FROM,
+		"dateTo":   DATE_TO,
 		"granularity" : "daily"
         }
 )
+
 if res["status"] == 200:
     ses = res["session"]
 else: 
     print res
 
-for line in res["report"]:
-
-
-    print line
+for gr in res["report"]:
+    print "Group \t", gr["groupId"]
+    for st in gr["stats"]:
+        print st["date"], "\tclicks: ", st["clicks"], "\timpressions: ", st["impressions"]
 

@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 USER = 313744
-CAMPAIGN = 848016
+CAMPAIGN = 0
 
 DATE_FROM = datetime.strptime("16.03.2016", "%d.%m.%Y")
 DATE_TO = datetime.strptime("22.03.2016", "%d.%m.%Y")
@@ -25,7 +25,7 @@ if CAMPAIGN:
 
 res = p.groups.list({
 	"session" : ses,
-	"userId"  : USER}, 
+	"userId"  : USER},
         {"campaignIds" : cIds}
 
 )
@@ -37,7 +37,7 @@ for g in res["groups"]:
 keywordIds = list()
 res = p.keywords.list({
         "session" : ses,
-        "userId"  : USER}, 
+        "userId"  : USER},
         {"groupIds" : gIds}
 
 )
@@ -54,10 +54,9 @@ res = p.keywords.stats({
 )
 
 for r in  res["report"]:
-	print "KW:", r["keywordId"] 
+	print "KW:", r["keywordId"]
 	for k in r["stats"]:
 		print "\t", k["date"], k["impressions"], k["clicks"]
 
 print "Kampane", cIds
 print "Sestavy", gIds
-
