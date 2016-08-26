@@ -26,7 +26,7 @@ res = p.campaigns.stats({
 	"dateFrom" : DATE_FROM,
 	"dateTo"   : DATE_TO,
 	"granularity" : "daily",
-	"includeFulltext" : True, 
+	"includeFulltext" : True,
 	"includeContext" : True
 	}
 )
@@ -34,7 +34,7 @@ res = p.campaigns.stats({
 suma = 0
 for r in res["report"]:
 	for c in r["stats"]:
-		suma += c["price"] 
+		suma += c["price"]
 
 print "Kampane celkem: %0.2f" % (suma / 100.0, )
 
@@ -47,12 +47,10 @@ res = p.ads.list({
 for ad in res["ads"]:
 	aIds.append(ad["id"])
 
-suma = 0
-impressions = 0
-clicks = 0
+suma = impressions = clicks = 0
 for i in range(0, len(aIds) / 100 + 1):
 
-	res = p.ads.stats({	
+	res = p.ads.stats({
         "session" : ses,
         "userId"  : USER
         }, aIds[i * 100:i * 100 + 100],
@@ -60,24 +58,47 @@ for i in range(0, len(aIds) / 100 + 1):
         "dateFrom" : DATE_FROM,
         "dateTo"   : DATE_TO,
         "granularity" : "daily",
-        "includeFulltext" : True, 
+        "includeFulltext" : True,
         "includeContext" : True
         }
 	)
-	print aIds[i * 100:i * 100 + 100]
+	#print aIds[i * 100:i * 100 + 100]
 
 
 	for ad in res["report"]:
 		for s in ad["stats"]:
 			suma += s["price"]
 			impressions += s["impressions"]
-			clicks += s["clicks"]		
+			clicks += s["clicks"]
 
-	print "I: %d, C: %d" % (impressions, clicks)
+	#print "I: %d, C: %d" % (impressions, clicks)
 
-print "%d ads, suma %0.2f, clicks: %d, impressions: %d" % (len(aIds), suma / 100.0, clicks, impressions)
-
-
+print "Ads.stats result: %d ads, suma %0.2f, clicks: %d, impressions: %d" % (len(aIds), suma / 100.0, clicks, impressions)
 
 
- 
+suma = impressions = clicks = 0
+for i in range(0, len(aIds) / 100 + 1):
+
+        res = p.banners.stats({
+        "session" : ses,
+        "userId"  : USER
+        }, aIds[i * 100:i * 100 + 100],
+        {
+        "dateFrom" : DATE_FROM,
+        "dateTo"   : DATE_TO,
+        "granularity" : "daily",
+        "includeFulltext" : True,
+        "includeContext" : True
+        }
+        )
+        #print aIds[i * 100:i * 100 + 100]
+	#print res
+        for ad in res:
+                for s in ad["stats"]:
+                        suma += s["price"]
+                        impressions += s["impressions"]
+                        clicks += s["clicks"]
+
+        #print "I: %d, C: %d" % (impressions, clicks)
+
+print "Banner stats result: %d ads, suma %0.2f, clicks: %d, impressions: %d" % (len(aIds), suma / 100.0, clicks, impressions)
