@@ -93,6 +93,7 @@ for i in range(0, len(aIds) / 100 + 1):
         )
         #print aIds[i * 100:i * 100 + 100]
 	#print res
+        #print "Numbers of results banners: %s" % len(res)
         for ad in res:
                 for s in ad["stats"]:
                         suma += s["price"]
