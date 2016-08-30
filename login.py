@@ -1,12 +1,12 @@
 import xmlrpclib
 
 p = xmlrpclib.ServerProxy('https://api.sklik.cz/cipisek/RPC2')
-#result = p.client.login("karotka@seznam.cz", '')
-result = p.client.login("zdenek.philipp@firma.seznam.cz", '')
+result = p.client.login("karotka@seznam.cz", '')
 
 if result["status"] == 200:
     ses = result["session"]
 else:
+    print result
     raise
 
 
