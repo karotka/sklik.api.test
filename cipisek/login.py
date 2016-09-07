@@ -1,7 +1,7 @@
 import xmlrpclib
 
 p = xmlrpclib.ServerProxy('https://api.sklik.cz/cipisek/RPC2')
-result = p.client.login("put_your_username_with_domain_here", 'put_you_passsword_here')
+result = p.client.login("username@domain", 'passsword')
 
 if result["status"] == 200:
     ses = result["session"]
