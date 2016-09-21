@@ -5,23 +5,26 @@ import time
 
 USER = {
 	'session' : ses,
-        'userId' : 72972}
+        'userId' : 59270}
 
 FILTER = {
-        "statisticsConditions" : [{"columnName" : "clicks", "operator" : "GT", "intValue" : 0}],
-        "dateFrom" : datetime.strptime("03.09.2016", "%d.%m.%Y"),
-        "dateTo" : datetime.strptime("03.09.2016", "%d.%m.%Y"),
+        "campaign" : {"ids" : (754936, 713109)},
+        "statisticsConditions" : [{"columnName" : "impressions", "operator" : "GT", "intValue" : 0}],
+        "dateFrom" : datetime.strptime("01.09.2016", "%d.%m.%Y"),
+        "dateTo" : datetime.strptime("30.09.2016", "%d.%m.%Y"),
 }
 
-res = p.keywords.createReport(USER, FILTER)
+res = p.groups.createReport(USER, FILTER, {"statGranularity" : "daily"})
 print "Create report: with filter: %s " % FILTER
+print "Returns %s lines" % res["totalCount"]
 
-ran = range(0, res["totalCount"] / 10000 + 1)
+ran = range(0, res["totalCount"] / 1000 + 1)
 clicks = impressions = price = 0
 for i in ran:
 	while 1:
-		print "\nData %s, %d, %d" % (res["reportId"], i * 10000, 10000)
-		r = p.keywords.stats(USER, res["reportId"], i * 10000, 10000)
+		print "\nData %s, %d, %d" % (res["reportId"], i * 1000, 1000)
+		r = p.groups.stats(USER, res["reportId"], i * 1000, 1000)
+		#print r
 		if r["status"] == 200:
 			for report in r["report"]:
 				for line in report["stats"]:
