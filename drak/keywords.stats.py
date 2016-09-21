@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+from login import p, ses
+from datetime import datetime
+import time
+
+USER = {
+	'session' : ses,
+        'userId' : 72972}
+
+FILTER = {
+        "statisticsConditions" : [{"columnName" : "clicks", "operator" : "GT", "intValue" : 0}],
+        "dateFrom" : datetime.strptime("03.09.2016", "%d.%m.%Y"),
+        "dateTo" : datetime.strptime("03.09.2016", "%d.%m.%Y"),
+}
+
+res = p.keywords.createReport(USER, FILTER)
+print "Create report: with filter: %s " % FILTER
+
+ran = range(0, res["totalCount"] / 10000 + 1)
+clicks = impressions = price = 0
+for i in ran:
+	while 1:
+		print "\nData %s, %d, %d" % (res["reportId"], i * 10000, 10000)
+		r = p.keywords.stats(USER, res["reportId"], i * 10000, 10000)
+		if r["status"] == 200:
+			for report in r["report"]:
+				for line in report["stats"]:
+					clicks += line["clicks"]
+					impressions += line["impressions"]
+					price += line["clickMoney"]
+					print "ID: %d clicks: %d, impressions: %d"  % (report["id"], line["clicks"], line["impressions"])
+		break
+	else:
+		print r
+		time.sleep(1)
+
+print "SUM clicks: %s, impression: %s, price:%.02f" % (clicks, impressions, price/100)
+
+
