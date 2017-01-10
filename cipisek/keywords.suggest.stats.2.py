@@ -9,7 +9,7 @@ res = p.keywords.suggest.stats({'session' : ses}, [
     "camera",
     "drive",
 
-], {"granularity" : "monthly"})
+], {"granularity" : "daily"})
 ses = res["session"]
 for c in res["stats"]:
     print "Query: %s \t %s \t %s" % (c["query"], c["avgSearchCount"], c["avgCpc"]) 

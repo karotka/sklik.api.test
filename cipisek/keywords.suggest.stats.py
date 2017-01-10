@@ -4,10 +4,11 @@
 from login import p, ses
 
 res = p.keywords.suggest.stats({'session' : ses}, [
-"humáty účinky",
+"bmw",
+"květináč"
 
-], {"granularity" : "daily"})
-ses = res["session"]
+], {"granularity" : "monthly"})
+print res
 for c in res["stats"]:
     print "Query: %s \t %s \t %s" % (c["query"], c["avgSearchCount"], c["avgCpc"]) 
     for i in c["searchCountInTime"]:
