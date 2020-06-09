@@ -1,7 +1,6 @@
 import xmlrpclib
 
 p = xmlrpclib.ServerProxy('https://api.sklik.cz/cipisek/RPC2')
-#result = p.client.login("zdenek.philipp@firma.seznam.cz", 'KArotka66155.')
 result = p.client.login("karotka@seznam.cz", 'Heslo123')
 print result
 if result["status"] == 200:
